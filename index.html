@@ -6,17 +6,20 @@
   <title>Bhagavad Gita AI Assistant</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
-    #output { margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 100px; }
+    #chatContainer { max-width: 600px; margin-top: 20px; }
+    #output { margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 150px; overflow-y: auto; max-height: 300px; }
     button { padding: 10px 15px; margin-left: 10px; cursor: pointer; }
+    input { width: 80%; padding: 10px; }
   </style>
 </head>
 <body>
 
   <h2>Bhagavad Gita AI Assistant</h2>
-  <input type="text" id="userInput" placeholder="Ask a question..." />
-  <button onclick="handleSubmit()">Submit</button>
-
-  <div id="output">Response will appear here...</div>
+  <div id="chatContainer">
+    <div id="output">Chat with the assistant... Type "exit" to leave.</div>
+    <input type="text" id="userInput" placeholder="Ask a question..." onkeypress="handleKeyPress(event)" />
+    <button onclick="handleSubmit()">Submit</button>
+  </div>
 
   <script>
 async function getGitaResponse(userMessage) {
@@ -56,15 +59,34 @@ async function getGitaResponse(userMessage) {
 }
 
 async function handleSubmit() {
-  const userInput = document.getElementById('userInput').value;
+  const userInput = document.getElementById('userInput');
   const outputDiv = document.getElementById('output');
+  const userMessage = userInput.value.trim();
 
-  outputDiv.textContent = 'Fetching response...';
-  const response = await getGitaResponse(userInput);
-  outputDiv.textContent = response;
+  if (userMessage.toLowerCase() === "exit") {
+    outputDiv.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
+    outputDiv.innerHTML += `<p><strong>Gita AI:</strong> Thank you for chatting. Goodbye! 🙏</p>`;
+    userInput.disabled = true; // Disable input field
+    return;
+  }
+
+  if (userMessage) {
+    outputDiv.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
+    userInput.value = ""; // Clear input field
+    outputDiv.scrollTop = outputDiv.scrollHeight; // Auto-scroll to latest message
+
+    const response = await getGitaResponse(userMessage);
+    outputDiv.innerHTML += `<p><strong>Gita AI:</strong> ${response}</p>`;
+    outputDiv.scrollTop = outputDiv.scrollHeight; // Auto-scroll again
+  }
 }
 
-
+// Allow pressing Enter to send message
+function handleKeyPress(event) {
+  if (event.key === "Enter") {
+    handleSubmit();
+  }
+}
   </script>
 
 </body>
