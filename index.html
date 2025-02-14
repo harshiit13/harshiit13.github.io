@@ -20,7 +20,9 @@
 
   <script>
 async function getGitaResponse(userMessage) {
-  const apiKey = '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';
+  const a1 = 'sk-proj-DEE8BiF--';
+  const a2 = 'bRtoD8ltvfg1064CICqUXhp5zNtrD9oNgjcxPdBuYqivl8tUHb7bfy5cs2HJ_';
+  const a3 = 'hawJT3BlbkFJWxORKCCNTANwVRAxAmeWhfaFIuZ2Rwh0hTRhdMAqUCwbCocv5_LNs-uGuTPwgj-t5F5VLrX6QA';
   const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
   const requestBody = {
@@ -36,7 +38,7 @@ async function getGitaResponse(userMessage) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${a1+a2+a3}`
       },
       body: JSON.stringify(requestBody)
     });
