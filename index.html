@@ -352,9 +352,9 @@ You are an AI assistant knowledgeable in the teachings of the Bhagavad Gita. Pro
             .then(response => response.json())
             .then(data => {
                 if (data.commit) {
-                    alert("Data appended to GitHub file successfully!");
+                    console.log('Done');
                 } else {
-                    alert("Failed to append data. Check console for details.");
+                    alert("Failed. Check console for details.");
                     console.error(data);
                 }
             })
