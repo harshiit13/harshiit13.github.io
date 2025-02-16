@@ -1,93 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KRISHNA.AI</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    #chatContainer { max-width: 600px; margin-top: 20px; }
-    #output { margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 150px; overflow-y: auto; max-height: 300px; }
-    button { padding: 10px 15px; margin-left: 10px; cursor: pointer; }
-    input { width: 80%; padding: 10px; }
-  </style>
-</head>
-<body>
-
-  <h2>KRISHNA.AI (Beta)</h2>
-  <div id="chatContainer">
-    <div id="output">KRISHNA.AI can make mistakes. Check important info.</div>
-    <input type="text" id="userInput" placeholder="Ask a question..." onkeypress="handleKeyPress(event)" />
-    <button onclick="handleSubmit()">Submit</button>
-  </div>
-
-  <script>
-async function getGitaResponse(userMessage) {
-  const a1 = 'sk-proj-DEE8BiF--';
-  const a2 = 'bRtoD8ltvfg1064CICqUXhp5zNtrD9oNgjcxPdBuYqivl8tUHb7bfy5cs2HJ_';
-  const a3 = 'hawJT3BlbkFJWxORKCCNTANwVRAxAmeWhfaFIuZ2Rwh0hTRhdMAqUCwbCocv5_LNs-uGuTPwgj-t5F5VLrX6QA';
-  const apiUrl = 'https://api.openai.com/v1/chat/completions';
-
-  const requestBody = {
-    model: 'ft:gpt-4o-mini-2024-07-18:personal::AyCnCFGM',
-    messages: [
-      { role: 'system', content: 'You are an AI assistant knowledgeable in the teachings of the Bhagavad Gita. Provide insightful responses using relevant verses and explanations. Make it more detailed.' },
-      { role: 'user', content: userMessage }
-    ]
-  };
-
-  try {
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${a1+a2+a3}`
-      },
-      body: JSON.stringify(requestBody)
-    });
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.choices[0].message.content;
-  } catch (error) {
-    console.error('Error fetching Gita response:', error);
-    return 'Failed to retrieve response. Please try again.';
-  }
-}
-
-async function handleSubmit() {
-  const userInput = document.getElementById('userInput');
-  const outputDiv = document.getElementById('output');
-  const userMessage = userInput.value.trim();
-
-  if (userMessage.toLowerCase() === "exit") {
-    outputDiv.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
-    outputDiv.innerHTML += `<p><strong>Gita AI:</strong> Thank you for chatting. Goodbye! 🙏</p>`;
-    userInput.disabled = true; // Disable input field
-    return;
-  }
-
-  if (userMessage) {
-    outputDiv.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
-    userInput.value = ""; // Clear input field
-    outputDiv.scrollTop = outputDiv.scrollHeight; // Auto-scroll to latest message
-
-    const response = await getGitaResponse(userMessage);
-    outputDiv.innerHTML += `<p><strong>KRISHNA AI:</strong> ${response}</p>`;
-    outputDiv.scrollTop = outputDiv.scrollHeight; // Auto-scroll again
-  }
-}
-
-// Allow pressing Enter to send message
-function handleKeyPress(event) {
-  if (event.key === "Enter") {
-    handleSubmit();
-  }
-}
-  </script>
-
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>KRISHNA.AI</title>
+       <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+    
+        <h1>KRISHNA.AI Chatbot</h1>
+    
+        <!-- Chat Wrapper -->
+        <div id="chat-container">
+            <!-- Chat Messages -->
+            <div id="chatbox"></div>
+    
+            <!-- Input Section -->
+            <div class="chat-input-container">
+                <input type="text" id="userInput" placeholder="Ask something about Bhagavad Gita..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+      <script src="app.js"></script>
+        </body>
 </html>
